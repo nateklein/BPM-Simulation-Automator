@@ -7,7 +7,16 @@ oProject = oDesktop.SetActiveProject("BPM Sim")
 oDesign = oProject.SetActiveDesign("Maxwell3DDesign1")
 oEditor = oDesign.SetActiveEditor("3D Modeler")
 
-coords = (0.0, 0.0)
+coords = (6.0, -2.0)
+
+try:
+	oEditor.Delete(
+	[
+		"NAME:Selections",
+		"Selections:="		, "Cylinder1"
+	])
+except:
+	pass
 
 # Make the beam
 oEditor.CreateCylinder(
@@ -48,3 +57,9 @@ oModule.AssignCharge(
 
 # Run analysis
 oDesign.AnalyzeAll()
+
+# Get voltage file
+oModule = oDesign.GetModule("FieldsReporter")
+oModule.SaveFieldsPlots(["Plate Voltages"], "\\\\Client\\E$\\SRP\\IREAP 2019\\voltages_at_"+str(coords[0])+"_"+str(coords[1])+".dsp")
+
+# Write data to file
